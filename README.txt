@@ -1,0 +1,1 @@
+A simple smart contract to enable users to deposit, withdraw and check balance of ether
