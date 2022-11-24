@@ -1,24 +1,34 @@
 // // // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.13;
+contract MyContract {
+   uint256 balance;
+   address payable public admin;
+ constructor() {
+       admin = payable(msg.sender);
+       balance = 0;
+       updateBalance();
+ 
+  
+}
+// linking the address and balance 
+   function updateBalance() internal {
+       balance += msg.value;
+   }
 
-contract myContract{
-    // map the address with the users
-    mapping(address => uint)public balances;
+//    function to withdraw the ether
+   function withdraw(uint256 amount)  public{
+       require(msg.sender == admin, "Withdrawing is possible only for an admin");
+       require(amount <= balance, "Withdraw can not be proceeded, because of limited balance");   
+       balance = balance - amount;
+  
+ }
 
-// function to deposit ether
-    function Deposit()public payable{
- balances[msg.sender] += msg.value;
+//  funtion to deposit ether
 
-// function to withdraw ether 
-function Withdraw(uint _amount) public {
-require (balances[msg.sender]>= _amount, “Insufficent Funds”);
-balances[msg.sender]-=_amount;
-(bool sent,) = msg.sender.call{value: _amount}(“sent”);
-require(sent, “Failed to Complete”);
+   function deposit(uint256 amount) public returns (uint256) { return balance = balance + amount; }
 
+//    function to check the deposit
 
-// Function to get the balance
-function GetBal()public view returns(uint){
-return(address(this).balance);
+   function checkDepositBalance() public view returns (uint256) { return balance; }
 }
